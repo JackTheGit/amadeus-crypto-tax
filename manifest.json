@@ -6,13 +6,13 @@
   "author": "JackTheGit",
   "entrypoint": "tools.py", 
   "actions": {
-    "fetch-wallet-transactions": {
+    "fetchWalletTransactions": {
       "description": "Scans on-chain EVM wallet histories (Ethereum, Polygon, Arbitrum, Base, Optimism) via Blockscout endpoints."
     },
-    "fetch-cex-transactions": {
+    "fetchCexTransactions": {
       "description": "Pulls historical trade logs from Binance, Coinbase, Kraken, and 100+ CEXs via ccxt."
     },
-    "calculate-crypto-gains": {
+    "calculateCryptoGains": {
       "description": "Runs FIFO/LIFO lot matching with short-term vs. long-term capital gains splits and ERC-20 token support."
     }
   }

@@ -1,0 +1,21 @@
+{
+  "name": "Crypto Tax Calculator",
+  "description": "Calculates cryptocurrency tax obligations by tracking cost basis and transaction history across multiple chains and exchanges.",
+  "version": "1.0.0",
+  "author": "JackTheGit",
+  "entrypoint": "tools.py", 
+  "tools": [
+    {
+      "name": "fetch_wallet_transactions",
+      "description": "Scans on-chain EVM wallet histories (Ethereum, Polygon, Arbitrum, Base, Optimism) via Blockscout endpoints."
+    },
+    {
+      "name": "fetch_cex_transactions",
+      "description": "Pulls historical trade logs from Binance, Coinbase, Kraken, and 100+ CEXs via ccxt."
+    },
+    {
+      "name": "calculate_crypto_gains",
+      "description": "Runs FIFO/LIFO lot matching with short-term vs. long-term capital gains splits and ERC-20 token support."
+    }
+  ]
+}

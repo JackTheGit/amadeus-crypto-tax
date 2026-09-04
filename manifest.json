@@ -1,4 +1,5 @@
 {
+  "slug": "crypto-tax-calculator",
   "name": "Crypto Tax Calculator",
   "description": "Calculates cryptocurrency tax obligations by tracking cost basis and transaction history across multiple chains and exchanges.",
   "version": "1.0.0",

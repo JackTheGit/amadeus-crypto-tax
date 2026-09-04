@@ -4,16 +4,35 @@
   "description": "Calculates cryptocurrency tax obligations by tracking cost basis and transaction history across multiple chains and exchanges.",
   "version": "1.0.0",
   "author": "JackTheGit",
-  "entrypoint": "tools.py", 
-  "actions": {
-    "fetchWalletTransactions": {
-      "description": "Scans on-chain EVM wallet histories (Ethereum, Polygon, Arbitrum, Base, Optimism) via Blockscout endpoints."
+  "read": [
+    {
+      "action": "fetchWalletTransactions",
+      "description": "Scans on-chain EVM wallet histories (Ethereum, Polygon, Arbitrum, Base, Optimism) via Blockscout endpoints.",
+      "parameters": {
+        "chain": "string — e.g. ethereum, polygon, arbitrum, base, optimism",
+        "address": "string — the wallet address to scan",
+        "fromDate": "string — start date (YYYY-MM-DD)",
+        "toDate": "string — end date (YYYY-MM-DD)"
+      }
     },
-    "fetchCexTransactions": {
-      "description": "Pulls historical trade logs from Binance, Coinbase, Kraken, and 100+ CEXs via ccxt."
+    {
+      "action": "fetchCexTransactions",
+      "description": "Pulls historical trade logs from Binance, Coinbase, Kraken, and 100+ CEXs via ccxt.",
+      "parameters": {
+        "exchange": "string — e.g. binance, coinbase, kraken",
+        "apiKey": "string — the exchange API key",
+        "secret": "string — the exchange API secret",
+        "fromDate": "string — start date (YYYY-MM-DD)",
+        "toDate": "string — end date (YYYY-MM-DD)"
+      }
     },
-    "calculateCryptoGains": {
-      "description": "Runs FIFO/LIFO lot matching with short-term vs. long-term capital gains splits and ERC-20 token support."
+    {
+      "action": "calculateCryptoGains",
+      "description": "Runs FIFO/LIFO lot matching with short-term vs. long-term capital gains splits and ERC-20 token support.",
+      "parameters": {
+        "method": "string — FIFO or LIFO",
+        "currency": "string — the fiat currency for gains reporting, e.g. USD"
+      }
     }
-  }
+  ]
 }

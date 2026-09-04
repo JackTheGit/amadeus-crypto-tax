@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "author": "JackTheGit",
   "entrypoint": "tools.py", 
-  "tools": [
+  "actions": [
     {
       "name": "fetch_wallet_transactions",
       "description": "Scans on-chain EVM wallet histories (Ethereum, Polygon, Arbitrum, Base, Optimism) via Blockscout endpoints."

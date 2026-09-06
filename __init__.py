@@ -1,4 +1,4 @@
-"""Crypto Tax Plugin for Hermes Agent."""
+"""Crypto Tax for Amadeus Agent."""
 
 import json
 from .schemas import CALCULATE_GAINS_SCHEMA, FETCH_CEX_TXS_SCHEMA, FETCH_WALLET_TXS_SCHEMA

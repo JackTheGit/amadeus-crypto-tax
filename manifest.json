@@ -1,3 +1,4 @@
+```json
 {
 "slug": "crypto-tax-calculator",
 "name": "Crypto Tax Calculator",
@@ -5,33 +6,18 @@
 "version": "1.0.0",
 "author": "JackTheGit",
 "product_kind": "agent",
-"chains": ["ethereum", "polygon", "arbitrum", "base", "optimism", "ama"],
-"read": [
-{
-"skill": "coingecko",
-"action": "price",
-"description": "Live crypto prices for cost-basis calculations.",
-"parameters": {
-"ids": "string — comma-separated CoinGecko ids, e.g. bitcoin,ethereum"
-}
-},
-{
-"skill": "evm-tokens",
-"action": "balance",
-"description": "Read ERC-20 balances on EVM chains.",
-"parameters": {
-"chainId": "number — e.g. 1 for Ethereum, 137 for Polygon",
-"token": "string — token contract address or ETH",
-"address": "string — wallet address"
-}
-},
-{
-"skill": "near-intents",
-"action": "balance",
-"description": "Read AMA-chain wallet balances and history.",
-"parameters": {
-"address": "string — AMA wallet address"
-}
-}
+"chains": [
+"ethereum",
+"polygon",
+"arbitrum",
+"base",
+"optimism",
+"ama"
+],
+"skills": [
+"coingecko",
+"evm-tokens",
+"near-intents"
 ]
 }
+```

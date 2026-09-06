@@ -1,4 +1,4 @@
-"""JSON schemas for the crypto_tax Hermes plugin."""
+"""JSON schemas for the crypto_tax Amadues plugin."""
 
 CALCULATE_GAINS_SCHEMA = {
     "name": "calculate_crypto_gains",

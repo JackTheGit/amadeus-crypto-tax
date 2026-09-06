@@ -1,9 +1,9 @@
-# Hermes Crypto Tax Plugin
+# Crypto Tax Calculator Skill for Amadeus
 
-[![Version](https://img.shields.io/badge/version-1.2.0-blue)](plugin.yaml)
-[![Hermes](https://img.shields.io/badge/Hermes-Agent-8A2BE2)](https://github.com/NousResearch/hermes-agent)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue)](manifest.json)
+[![Amadeus](https://img.shields.io/badge/AMA_Hub-Skill-00C4B3)](https://hub.ama.one/skills)
 
-A Hermes Agent plugin for crypto tax calculations: fetch on-chain wallet transactions and CEX trade history, then compute capital gains with FIFO/LIFO lot matching.
+An Amadeus Agent skill for crypto tax calculations: fetch on-chain wallet transactions and CEX trade history, then compute capital gains with FIFO/LIFO lot matching.
 
 ## Features
 
@@ -16,82 +16,71 @@ A Hermes Agent plugin for crypto tax calculations: fetch on-chain wallet transac
 
 ## Installation
 
-### As a Hermes Plugin
-```bash
-# Clone and install
-git clone https://github.com/JackTheGit/hermes-crypto-tax-plugin.git
-cp -r hermes-crypto-tax-plugin/*.py hermes-crypto-tax-plugin/*.yaml ~/.hermes/plugins/crypto_tax/
-hermes plugins enable crypto_tax
-```
+### Via AMA Hub (Recommended)
+1. Navigate to the **Skills** tab in [AMA Hub](https://hub.ama.one/skills).
+2. Click **Install from repo**.
+3. Paste the raw manifest URL:
+   `https://raw.githubusercontent.com/JackTheGit/amadeus-crypto-tax/main/manifest.json`
 
-### As a Hermes Skill
-```bash
-hermes skills install JackTheGit/hermes-crypto-tax-plugin/skills/crypto-tax-workflow
-```
-
-### Python Dependencies
+### Python Dependencies (Local standalone execution)
 ```bash
 pip install --user ccxt requests
 ```
 
-## Tools
+## Actions
 
-### `fetch_wallet_transactions`
+The capabilities below correspond to the `read` actions defined in the `manifest.json`.
+
+### `fetchWalletTransactions`
 
 Fetch on-chain transaction history for an EVM wallet.
 
-| Param | Type | Default | Description |
-|---|---|---|---|
-| `address` | string | *(required)* | Wallet address (0x...) |
-| `chain` | string | `"ethereum"` | Network: ethereum, polygon, arbitrum, base, optimism |
-| `max_pages` | int | `20` | Pages to fetch (50 txs/page) |
-| `min_value_eth` | float | `0.0` | Skip transfers below this ETH value (dust filter) |
-| `include_erc20` | bool | `false` | Also fetch ERC-20 token transfers |
+| Param | Type | Description |
+|---|---|---|
+| `address` | string | Wallet address (0x...) |
+| `chain` | string | Network: ethereum, polygon, arbitrum, base, optimism |
+| `fromDate` | string | Start date (YYYY-MM-DD) |
+| `toDate` | string | End date (YYYY-MM-DD) |
 
-### `fetch_cex_transactions`
+### `fetchCexTransactions`
 
 Fetch spot trade history from a centralized exchange.
 
-| Param | Type | Default | Description |
-|---|---|---|---|
-| `exchange_id` | string | *(required)* | CCXT exchange id (`"binance"`, `"coinbase"`, etc.) |
-| `api_key` | string | `EXCHANGE_API_KEY` env | API key |
-| `secret` | string | `EXCHANGE_SECRET` env | API secret |
-| `symbols` | list | `["BTC/USDT","ETH/USDT"]` | Trading pairs to query |
+| Param | Type | Description |
+|---|---|---|
+| `exchange` | string | CCXT exchange ID (e.g. binance, coinbase, kraken) |
+| `apiKey` | string | The exchange API key |
+| `secret` | string | The exchange API secret |
+| `fromDate` | string | Start date (YYYY-MM-DD) |
+| `toDate` | string | End date (YYYY-MM-DD) |
 
-### `calculate_crypto_gains`
+### `calculateCryptoGains`
 
 Compute capital gains/losses with FIFO/LIFO lot matching.
 
-| Param | Type | Default | Description |
-|---|---|---|---|
-| `transactions` | list | *(required)* | Transaction list from fetch tools |
-| `method` | string | `"FIFO"` | Lot matching: `"FIFO"` or `"LIFO"` |
-| `jurisdiction` | string | `"GENERIC"` | Tax jurisdiction: `"US"`, `"UK"`, `"GENERIC"` |
-| `annual_income_usd` | float | `0.0` | For bracket estimation |
+| Param | Type | Description |
+|---|---|---|
+| `method` | string | Lot matching: FIFO or LIFO |
+| `currency` | string | The fiat currency for gains reporting, e.g. USD |
 
-Returns `{ capital_gains_summary, ordinary_income_summary, sales_detail }`.
-
-## Usage
+## Usage (Python Scripting)
 
 ```python
-from tools import fetch_wallet_transactions, calculate_crypto_gains
+from tools import fetchWalletTransactions, calculateCryptoGains
 
 # Fetch wallet history
-result = fetch_wallet_transactions(
+result = fetchWalletTransactions(
     address="0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
     chain="ethereum",
-    max_pages=30,
-    min_value_eth=0.0001,
-    include_erc20=True,
+    fromDate="2025-01-01",
+    toDate="2025-12-31"
 )
 
 # Calculate gains
-tax = calculate_crypto_gains(
-    result["transactions"],
+tax = calculateCryptoGains(
+    transactions=result["transactions"],
     method="FIFO",
-    jurisdiction="US",
-    annual_income_usd=80000,
+    currency="USD"
 )
 
 print(tax["capital_gains_summary"])
@@ -107,14 +96,6 @@ for disposal in tax["sales_detail"]:
           f"{'LTCG' if disposal['long_term'] else 'STCG'}")
 ```
 
-## Environment Variables
-
-| Variable | Required | Description |
-|---|---|---|
-| `EXCHANGE_API_KEY` | For CEX | CCXT exchange API key |
-| `EXCHANGE_SECRET` | For CEX | CCXT exchange API secret |
-| `ETHERSCAN_API_KEY` | Optional | Higher rate limits (Blockscout is keyless by default) |
-
 ## Caveats
 
 - **Wallet transactions are simplistic** — all outgoing ETH is classified as "SELL" (taxable disposition). Wallet-to-wallet transfers, bridge transactions, and contract interactions are NOT real sales but are classified as such.
@@ -125,4 +106,4 @@ for disposal in tax["sales_detail"]:
 
 ## License
 
-MIT — see [Hermes Agent](https://github.com/NousResearch/hermes-agent) for details.
+MIT
